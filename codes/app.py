@@ -1,7 +1,10 @@
-from flask import Flask, request, render_template
+import os
+from flask import Flask, request, render_template, redirect, url_for
 from scraping_logics import fetch_html, parse_images, download_images
 
-app = Flask(__name__)
+template_directory = os.path.abspath ("D:/Projects/Data Scraping Application/templates")
+
+app = Flask(__name__, template_folder = template_directory)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
