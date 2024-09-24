@@ -8,9 +8,13 @@
 </head>
 <body>
     <h1>Welcome to the Image Scraper</h1>
-    <form action="/download" method="POST">
+    <form action="/" method="POST">
         <label for="url">Enter URL:</label>
         <input type="text" id="url" name="url" required>
+        <br><br>
+        <label for="destination">Destination Folder:</label>
+        <input type="text" id="destination" name="destination" required>
+        <br><br>
         <button type="submit">Download Images</button>
     </form>
 </body>
