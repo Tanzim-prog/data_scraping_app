@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, Response
 from time import sleep
-from scraping_logics import scrape_images
+from codes.scraping_logics import scrape_images
 
 # Specify custom template directory
 #template_directory = os.path.abspath ("D:/Projects/Data Scraping Application/templates")
