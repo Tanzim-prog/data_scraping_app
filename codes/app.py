@@ -1,11 +1,15 @@
 import os
+import sys
 from flask import Flask, request, render_template, Response
 from time import sleep
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from codes.scraping_logics import scrape_images
 
 # Specify custom template directory
 #template_directory = os.path.abspath ("D:/Projects/Data Scraping Application/templates")
-template_directory = os.path.join(os.path.dirname(os.path.abspath("D:/Projects/Data Scraping Application/templates")), "templates")
+template_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates')
 
 app = Flask(__name__, template_folder = template_directory)
 
