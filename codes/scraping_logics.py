@@ -4,7 +4,7 @@ import requests
 import mimetypes
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-from webdriver_setup import get_webdriver 
+from codes.webdriver_setup import get_webdriver 
 
 # Create a session for making requests with headers
 session = requests.Session()
