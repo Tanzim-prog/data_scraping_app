@@ -1,16 +1,21 @@
 import os
-from flask import Flask, request, render_template, redirect, url_for
-from scraping_logics import fetch_html, parse_images, download_images
+from flask import Flask, request, render_template, Response
+from time import sleep
+from scraping_logics import scrape_images
 
 # Specify custom template directory
-template_directory = os.path.abspath ("D:/Projects/Data Scraping Application/templates")
+#template_directory = os.path.abspath ("D:/Projects/Data Scraping Application/templates")
+template_directory = os.path.join(os.path.dirname(os.path.abspath("D:/Projects/Data Scraping Application/templates")), "templates")
 
 app = Flask(__name__, template_folder = template_directory)
 
+# Define the route for the homepage
 @app.route('/', methods=['GET', 'POST'])
 
 def index():
     if request.method == 'POST':
+
+        # Get the URL and destination folder from the form
         url = request.form.get('url')
         destination_folder = request.form.get('destination')
 
@@ -18,23 +23,33 @@ def index():
         if not url or not destination_folder:
             return 'Both URL and destination folder are required.', 400
         
-        # Fetch HTML content from the provided URL
-        html = fetch_html(url)
-        if html:
-            # Parse images from the HTML
-            img_urls = parse_images(html, url)
-            if img_urls:
-                try:
-                    download_images (img_urls, destination_folder)
-                    return f'Successfully downloaded {len(img_urls)} images to {destination_folder}'
-                except Exception as e:
-                    return f'Error downloading images: {e}', 500
-            else:
-                return 'No images found at the provided URL.', 404
-        else:
-            return 'Failed to retrieve the webpage. Please check the URL and try again.', 400
+        # Start scraping process
+        try:
+            # Launch the image scraping function
+            scrape_images(url, destination_folder)
+            return f'Successfully downloaded images to {destination_folder}'
+        except Exception as e:
+            return f'Error occurred: {str(e)}', 500
+
+    # Render the HTML form when method is GET
+    return render_template('index.html')
+
+# EventSource route to send real-time updates (image count) to frontend
+@app.route('/scrape-stream')
+def scrape_stream():
+    def generate():
+        # Here we simulate image downloading and counting for demonstration
+        count = 0
+        while count < 10:  # Example: simulating 10 images
+            count += 1
+            yield f"data: {count}\n\n"
+            sleep(1)  # Wait for 1 second before sending the next update
         
-    return render_template ('index.html')
+        # End the event stream once the process is done
+        yield "data: complete\n\n"
+
+    return Response(generate(), mimetype='text/event-stream')
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host='0.0.0.0', port=5000, debug = False)
+

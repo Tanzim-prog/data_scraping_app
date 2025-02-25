@@ -1,0 +1,27 @@
+/* Custom Modal Styling */
+.modal-content {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal-body {
+  font-size: 14px;
+}
+
+.form-check-label {
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.modal-footer {
+  background-color: #f1f1f1;
+}
